@@ -7,22 +7,37 @@ class Todo {
   final String id;
   final String description;
   final bool done;
+  final String contents;
+  final int colorCode;
 
-  Todo({required this.description, this.done = false})
-      : id = DateTime.now().millisecondsSinceEpoch.toString();
+  Todo({
+    required this.description,
+    this.done = false,
+    required this.contents,
+    required this.colorCode,
+  }) : id = DateTime.now().millisecondsSinceEpoch.toString();
 
-  const Todo.withId(
-      {required this.id, required this.description, this.done = false});
+  const Todo.withId({
+    required this.id,
+    required this.description,
+    this.done = false,
+    required this.contents,
+    required this.colorCode,
+  });
 
   static const initialTodos = [
     Todo.withId(
       id: '0',
       description: 'サンプル１',
       done: true,
+      contents: '',
+      colorCode: 0xFF4D79EB,
     ),
     Todo.withId(
       id: '1',
       description: 'サンプル２',
+      contents: '',
+      colorCode: 0xFF5AEB4D,
     ),
   ];
 
@@ -30,11 +45,15 @@ class Todo {
     String? id,
     String? description,
     bool? done,
+    String? contents,
+    int? colorCode,
   }) {
     return Todo.withId(
       id: id ?? this.id,
       description: description ?? this.description,
       done: done ?? this.done,
+      contents: contents ?? this.contents,
+      colorCode: colorCode ?? this.colorCode,
     );
   }
 
@@ -43,6 +62,8 @@ class Todo {
       'id': id,
       'text': description,
       'done': done,
+      'contents': contents,
+      'colorCode': colorCode,
     });
   }
 
@@ -52,6 +73,8 @@ class Todo {
       id: mapData['id'] as String,
       description: mapData['text'] as String,
       done: mapData['done'] as bool,
+      contents: mapData['contents'] as String,
+      colorCode: mapData['colorCode'] as int,
     );
   }
 
@@ -62,6 +85,11 @@ class Todo {
   }
 
   @override
-  int get hashCode =>
-      Object.hash(id.hashCode, description.hashCode, done.hashCode);
+  int get hashCode => Object.hash(
+        id.hashCode,
+        description.hashCode,
+        done.hashCode,
+        contents.hashCode,
+        colorCode.hashCode,
+      );
 }

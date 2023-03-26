@@ -29,8 +29,8 @@ class TodoTile extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 decoration: TextDecoration.lineThrough,
               )
-            : const TextStyle(
-                color: Colors.black,
+            : TextStyle(
+                color: Color(todo.colorCode),
                 fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),

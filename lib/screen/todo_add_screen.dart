@@ -16,6 +16,7 @@ class TodoAddScreen extends StatefulWidget {
 class TodoAddScreenState extends State<TodoAddScreen> {
   final todoController = Get.find<TodoController>();
   final textController = TextEditingController();
+  final contentsController = TextEditingController();
   Todo? todo;
 
   @override
@@ -25,6 +26,7 @@ class TodoAddScreenState extends State<TodoAddScreen> {
       todo = todoController.getTodoById(widget.todoId!);
       if (todo != null) {
         textController.text = todo!.description;
+        contentsController.text = todo!.contents;
       }
     }
   }
@@ -45,10 +47,11 @@ class TodoAddScreenState extends State<TodoAddScreen> {
           IconButton(
             onPressed: () {
               final text = textController.text;
+              final contents = contentsController.text;
               if (todo == null && text.isNotEmpty) {
-                todoController.addTodo(text);
+                todoController.addTodo(text, contents);
               } else if (todo != null) {
-                todoController.updateText(text, todo!);
+                todoController.updateText(text, todo!, contents);
               }
               Get.back();
             },
@@ -67,12 +70,53 @@ class TodoAddScreenState extends State<TodoAddScreen> {
                   controller: textController,
                   autofocus: true,
                   decoration: const InputDecoration(
-                    hintText: 'タスクの入力',
-                    border: InputBorder.none,
-                    focusedBorder: InputBorder.none,
+                    hintText: 'タイトルの入力',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 5),
+                    ),
                   ),
                   style: const TextStyle(fontSize: 20),
-                  maxLines: null,
+                  maxLines: 1,
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: contentsController,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    hintText: '内容の入力',
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 1),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.green, width: 4),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 20),
+                  maxLines: 10,
+                ),
+                const SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton(
+                      onPressed: todoController.openDialog,
+                      child: const Text(
+                        '色を変更する',
+                      ),
+                    ),
+                    Obx(
+                      () => Container(
+                        width: 50,
+                        height: 50,
+                        color: Color(
+                          todoController.pickerColor.value,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

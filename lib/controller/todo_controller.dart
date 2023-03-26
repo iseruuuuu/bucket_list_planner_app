@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +17,7 @@ class TodoController extends GetxController {
   late final Worker _worker;
   late RxString backgroundImages = ''.obs;
   final picker = ImagePicker();
+  RxInt pickerColor = 0xff060606.obs;
 
   @override
   void onInit() {
@@ -31,7 +36,8 @@ class TodoController extends GetxController {
 
   _loadBackgroundImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String imagePath = prefs.getString('backgroundImage') ?? 'https://beiz.jp/images_T/white/white_00081.jpg';
+    String imagePath = prefs.getString('backgroundImage') ??
+        'https://beiz.jp/images_T/white/white_00081.jpg';
     backgroundImages.value = imagePath;
   }
 
@@ -45,6 +51,28 @@ class TodoController extends GetxController {
   _saveBackgroundImage(String imagePath) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString('backgroundImage', imagePath);
+  }
+
+  void openDialog() {
+    showDialog(
+      context: Get.context!,
+      builder: (_) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: SingleChildScrollView(
+              child: ColorPicker(
+                pickerColor: Color(pickerColor.value),
+                onColorChanged: changeColor,
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  void changeColor(Color color) {
+    pickerColor.value = color.value;
   }
 
   @override
@@ -79,14 +107,25 @@ class TodoController extends GetxController {
     }
   }
 
-  void addTodo(String description) {
-    final todo = Todo(description: description);
+  void addTodo(
+    String description,
+    String contents,
+  ) {
+    final todo = Todo(
+      description: description,
+      contents: contents,
+      colorCode: pickerColor.value,
+    );
     _todos.add(todo);
   }
 
-  void updateText(String description, Todo todo) {
+  void updateText(String description, Todo todo, String contents) {
     final index = _todos.indexOf(todo);
-    final newTodo = todo.copyWith(description: description);
+    final newTodo = todo.copyWith(
+      description: description,
+      contents: contents,
+      colorCode: pickerColor.value,
+    );
     _todos.setAll(index, [newTodo]);
   }
 
