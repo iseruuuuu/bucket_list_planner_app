@@ -31,7 +31,7 @@ class TodoController extends GetxController {
 
   _loadBackgroundImage() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String imagePath = prefs.getString('backgroundImage') ?? 'https://cdn.pixabay.com/photo/2023/03/15/03/46/jeep-7853620_960_720.jpg';
+    String imagePath = prefs.getString('backgroundImage') ?? 'https://beiz.jp/images_T/white/white_00081.jpg';
     backgroundImages.value = imagePath;
   }
 
