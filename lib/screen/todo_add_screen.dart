@@ -60,12 +60,13 @@ class TodoAddScreenState extends State<TodoAddScreen> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.symmetric(horizontal: 15),
         child: Stack(
           alignment: Alignment.bottomCenter,
           children: [
             Column(
               children: [
+                const Spacer(),
                 TextField(
                   controller: textController,
                   autofocus: true,
@@ -81,7 +82,7 @@ class TodoAddScreenState extends State<TodoAddScreen> {
                   style: const TextStyle(fontSize: 20),
                   maxLines: 1,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 50),
                 TextField(
                   controller: contentsController,
                   autofocus: true,
@@ -97,20 +98,25 @@ class TodoAddScreenState extends State<TodoAddScreen> {
                   style: const TextStyle(fontSize: 20),
                   maxLines: 10,
                 ),
-                const SizedBox(height: 30),
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     TextButton(
                       onPressed: todoController.openDialog,
-                      child: const Text(
-                        '色を変更する',
+                      child: Text(
+                        'カラーの設定',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: ColorConstant.blue,
+                        ),
                       ),
                     ),
                     Obx(
                       () => Container(
-                        width: 50,
-                        height: 50,
+                        width: 80,
+                        height: 80,
                         color: Color(
                           todoController.pickerColor.value,
                         ),
@@ -118,6 +124,7 @@ class TodoAddScreenState extends State<TodoAddScreen> {
                     ),
                   ],
                 ),
+                const Spacer(),
               ],
             ),
           ],
